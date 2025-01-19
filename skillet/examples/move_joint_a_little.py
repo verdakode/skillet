@@ -1,5 +1,4 @@
 """Example script to interact with actuators.
-
 Make sure you have configured and zeroed the joints before running this script.
 """
 
@@ -20,15 +19,9 @@ MOVE_DEGREES = 35.0  # Could be 10 or -20 or whatever you want
 
 
 def configure_joint(kos: pykos.KOS, joint_name: str) -> None:
-    """Configure a specific actuator with preset PID gains.
-
-    Args:
-        kos (pykos.KOS): Instance of the KOS object to communicate with actuators.
-        joint_name (str): Name of the joint to configure.
-    """
+    """Configure a specific actuator with preset PID gains."""
     actuator_id = ACTUATOR_NAME_TO_ID[joint_name]
     logging.info("Configuring %s (ID: %d)", joint_name, actuator_id)
-
     result = kos.actuator.configure_actuator(
         actuator_id=actuator_id,
         kp=32.0,  # Proportional gain
@@ -41,25 +34,14 @@ def configure_joint(kos: pykos.KOS, joint_name: str) -> None:
 
 
 def get_joint_state(kos: pykos.KOS, joint_name: str) -> None:
-    """Get and log the state of a specific actuator.
-
-    Args:
-        kos (pykos.KOS): Instance of the KOS object to communicate with actuators.
-        joint_name (str): Name of the joint whose state should be retrieved.
-    """
+    """Get and log the state of a specific actuator."""
     actuator_id = ACTUATOR_NAME_TO_ID[joint_name]
     state = kos.actuator.get_actuators_state([actuator_id])
     logging.info("%s state: %s", joint_name, state)
 
 
 def move_joint(kos: pykos.KOS, joint_name: str, position: float) -> None:
-    """Move a joint to a given position.
-
-    Args:
-        kos (pykos.KOS): Instance of the KOS object to communicate with actuators.
-        joint_name (str): Name of the joint to move.
-        position (float): Target position to move the joint to.
-    """
+    """Move a joint to a given position."""
     logging.info("Moving %s to position %f", joint_name, position)
     command = {"actuator_id": ACTUATOR_NAME_TO_ID[joint_name], "position": position}
     result = kos.actuator.command_actuators([command])
@@ -67,18 +49,13 @@ def move_joint(kos: pykos.KOS, joint_name: str, position: float) -> None:
 
 
 def move_joint_a_little(joint_name: str, move_degrees: float) -> None:
-    """Move a joint by a specified number of degrees from its current position.
-
-    Args:
-        joint_name (str): Name of the joint to move.
-        move_degrees (float): Number of degrees to move (positive or negative).
-    """
+    """Move a joint by a specified number of degrees from its current position."""
     # Configure logging
     logging.basicConfig(level=logging.INFO)
     colorlogging.configure()
 
-    # Instantiate the KOS client
-    kos = pykos.KOS(ip="192.168.42.1")
+    # Instantiate the KOS client with wlan0 IP
+    kos = pykos.KOS(ip="10.33.11.238")
 
     # Configure and log initial state
     configure_joint(kos, joint_name)

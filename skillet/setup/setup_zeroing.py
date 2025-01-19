@@ -30,9 +30,16 @@ def main() -> None:
 
             # Get and log actuator state
             state = kos.actuator.get_actuators_state([actuator_id])
+            if abs(state.states[0].position) > 1:
+                logger.error(
+                    "Failed to set zero for actuator %s with id %d, current position: %d",
+                    actuator_name,
+                    actuator_id,
+                    state.states[0].position,
+                )
             logger.info("Current state for actuator %s with id %d: %s", actuator_name, actuator_id, state)
-
             time.sleep(0.1)
+
         except Exception as e:
             logger.error(
                 "Error while configuring/checking actuator %s (ID: %d): %s", actuator_name, actuator_id, str(e)
