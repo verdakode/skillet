@@ -17,6 +17,8 @@ def main() -> None:
     # Create commands list in correct format
     commands = []
     for actuator_id in ACTUATOR_NAME_TO_ID.values():
+        # Enable torque for each actuator
+        kos.actuator.configure_actuator(actuator_id=actuator_id, torque_enabled=True)
         command = {"actuator_id": actuator_id, "position": 0.0, "velocity": 0.0, "torque": 0.0}  # Optional  # Optional
         commands.append(command)
 
@@ -36,6 +38,11 @@ def main() -> None:
         for name, act_id in ACTUATOR_NAME_TO_ID.items():
             state = kos.actuator.get_actuators_state([act_id])
             logger.info(f"Final state for {name}: {state}")
+
+        # Disable torque for all actuators after movement is complete
+        logger.info("Disabling torque for all actuators")
+        for actuator_id in ACTUATOR_NAME_TO_ID.values():
+            kos.actuator.configure_actuator(actuator_id=actuator_id, torque_enabled=False)
 
     except Exception as e:
         logger.error(f"Error commanding actuators: {str(e)}")

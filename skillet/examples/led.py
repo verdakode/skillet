@@ -8,7 +8,7 @@ GRID_HEIGHT = 16
 CELL_SIZE = 10  # Pixel size for drawing
 
 # Initialize KOS connection
-kos = pykos.KOS("Z-1.kscale.lan")
+kos = pykos.KOS("192.168.42.1")
 
 # Create a blank image (1-bit per pixel)
 image = Image.new("1", (GRID_WIDTH, GRID_HEIGHT), "black")

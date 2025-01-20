@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 def main() -> None:
     """Configure and zero actuators, reading their states."""
     colorlogging.configure()
-    kos = pykos.KOS(ip="192.168.42.1")
+    kos = pykos.KOS(ip="10.33.11.238")
 
     for actuator_name, actuator_id in ACTUATOR_NAME_TO_ID.items():
         try:
